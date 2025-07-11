@@ -2,6 +2,8 @@
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { ClipboardCopyIcon } from "lucide-react"
+import { useState } from "react"
 
 import java from "react-syntax-highlighter/dist/esm/languages/prism/java"
 import php from "react-syntax-highlighter/dist/esm/languages/prism/php"
@@ -35,6 +37,18 @@ interface HighlightedCodeBlockProps {
 }
 
 export default function HighlightedCodeBlock({ fileName, code }: HighlightedCodeBlockProps) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    try{
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err){
+      console.error("Failed to copy", err)
+    }
+  }
+
   const extensionToLanguageMap: Record<string, string> = {
     java: "java",
     php: "php",
@@ -53,12 +67,20 @@ export default function HighlightedCodeBlock({ fileName, code }: HighlightedCode
   const language = extensionToLanguageMap[fileExtension] || "text"
 
   return (
-    <div className="mb-6 border border-gray-700 bg-gray-900 rounded-lg overflow-hidden shadow">
+     <div className="relative group mb-6 border border-gray-700 bg-gray-900 rounded-lg overflow-hidden shadow">
       {fileName && (
         <div className="bg-gray-800 px-4 py-2 border-b border-gray-700 text-sm font-medium text-purple-400">
           {fileName}
         </div>
       )}
+
+      <button
+        onClick={handleCopy}
+        className="absolute top-2 right-2 text-xs px-2 py-1 rounded bg-gray-700 hover:bg-gray-600 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+      >
+        {copied ? "Copied!" : <ClipboardCopyIcon className="w-4 h-4" />}
+      </button>
+
       <SyntaxHighlighter
         language={language}
         style={materialDark}

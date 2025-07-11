@@ -59,6 +59,7 @@ export default function HomePage() {
     setPrompt("")
   }
 
+
   // (Auto resize user input behavior with shift+enter) and (scroll limit)
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [lineCount, setLineCount] = useState(1);
@@ -80,6 +81,17 @@ export default function HomePage() {
       }
     }
   }, [prompt]);
+
+
+  // Smooth scroll to bottom on new message
+ const bottomRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (bottomRef.current){
+      bottomRef.current.scrollIntoView({behavior: "smooth"})
+    }
+  }, [messages])
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
@@ -119,14 +131,14 @@ export default function HomePage() {
         {/* Chat Messages Area */}
         {messages.length > 0 ? (
           <div className="flex-1 overflow-y-auto px-4 py-6 max-h-full">
-            <div className="max-w-3xl mx-auto space-y-6">
+            <div className="max-w-5xl mx-auto space-y-6">
               {messages.map((message, index) => (
                 <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-[80%] p-3 rounded-2xl ${
                       message.role === "user"
                         ? "bg-blue-600 text-white"
-                        : "bg-gray-800/80 text-gray-100 border border-gray-600/50"
+                        : "bg-gray-800/80 text-gray-100 border border-gray-600/50 text-xs"
                     }`}
                   >
                     {message.role === "user"
@@ -135,6 +147,7 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
+              <div ref = {bottomRef}></div>
               {loading && (
                 <div className="flex justify-start">
                   <div className="bg-gray-800/80 text-gray-100 border border-gray-600/50 p-4 rounded-2xl">

@@ -15,15 +15,7 @@ Backend:
 
 Response Format:
 1. **Start each file with**: [File: relative/path/to/filename.ext]
-2. **Include the code inside a properly typed code block**, like:
-
-[File: src/components/Button.tsx]
-\\\`\\\`\\\`tsx
-export function Button({ label }: { label: string }) {
-  return <button className="px-4 py-2 bg-blue-600 text-white rounded">{label}</button>;
-}
-\\\`\\\`\\\`
-
+2. **Do not wrap code in triple backticks**. Just include the raw code under each file.
 3. **Keep comments minimal**, only where clarification is needed.
 4. **Do not** provide explanations, summaries, or context outside the code.
 5. **Only respond with code and brief, relevant comments if necessary. Do not answer non-programming questions.

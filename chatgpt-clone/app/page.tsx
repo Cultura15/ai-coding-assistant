@@ -23,30 +23,27 @@ export default function HomePage() {
     setMessages(newMessages)
     setPrompt("")
 
-    try {
-      const res = await fetch("/api/ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: currentPrompt }),
-      })
+   const res = await fetch("/api/ai", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({message: currentPrompt})
+    });
 
-      const data = await res.json()
+    if (!res.body) return;
 
-      if (res.ok) {
-        const aiResponse = data.reply || "No response."
-        setMessages([...newMessages, { role: "assistant", content: aiResponse }])
-        setResponse(aiResponse)
-      } else {
-        throw new Error(data.error || "Something went wrong")
-      }
-    } catch (err) {
-      console.error(err)
-      const errorMessage = "Something went wrong. Please try again."
-      setMessages([...newMessages, { role: "assistant", content: errorMessage }])
-      setResponse(errorMessage)
+    const reader = res.body.getReader()
+    const decoder = new TextDecoder()
+    let fullText = "";
+    
+    while(true){
+      const {value, done} = await reader.read()
+      if (done) break;
+
+      const chunk = decoder.decode(value);
+      fullText += chunk;
+      setMessages([...newMessages, { role: "assistant", content: fullText }]);
     }
-
-    setLoading(false)
+    setLoading(false);
   }
 
   const handleExampleClick = (example: string) => {

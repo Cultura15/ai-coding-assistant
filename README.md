@@ -1,3 +1,5 @@
+<img src="https://skillicons.dev/icons?i=next" alt="Cultura">
+
 # ChatGPT Clone – AI Coding Assistant
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

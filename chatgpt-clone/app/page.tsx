@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { ChevronDown, Plus, Wrench, Mic, Settings, Info, Sparkles, Send } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 
@@ -60,13 +59,25 @@ export default function HomePage() {
     setPrompt("")
   }
 
-  // Auto resize user input behavior with shift+enter
+  // (Auto resize user input behavior with shift+enter) and (scroll limit)
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [lineCount, setLineCount] = useState(1);
+  const maxLinesBeforeScroll = 7;
 
   useEffect(() => {
+    const lines = prompt.split("\n").length
+    setLineCount(lines);
+
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto"
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+
+      if (lines <= maxLinesBeforeScroll){
+        textareaRef.current.style.overflowY = "hidden"
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      } else{
+        textareaRef.current.style.overflowY = "auto"
+        textareaRef.current.style.height = "150px";
+      }
     }
   }, [prompt]);
 
@@ -82,7 +93,7 @@ export default function HomePage() {
           </Button>
         </div>
 
-        {/* Center - Memory status */}
+        {/* Center */}
         <div className="flex items-center gap-2 text-gray-300 text-sm">
           <span>This is a clone version by Cultura</span>
           <Info className="w-4 h-4" />
@@ -112,7 +123,7 @@ export default function HomePage() {
               {messages.map((message, index) => (
                 <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div
-                    className={`max-w-[80%] p-4 rounded-2xl ${
+                    className={`max-w-[80%] p-3 rounded-2xl ${
                       message.role === "user"
                         ? "bg-blue-600 text-white"
                         : "bg-gray-800/80 text-gray-100 border border-gray-600/50"
@@ -137,19 +148,19 @@ export default function HomePage() {
             </div>
           </div>
         ) : (
-          /* Welcome Screen Welcome Screen */
+          /* Welcome Screen */
           <div className="flex-1 flex flex-col items-center justify-center px-4">
             <div className="w-full max-w-3xl mx-auto">
               {/* Main heading */}
-              <h1 className="text-white text-3xl md:text-4xl font-medium text-center mb-12">Where should we begin?</h1> 
+              <h1 className="text-white text-xl md:text-2xl font-medium text-center mb-12">Where should we begin?</h1> 
             </div>
-          </div>
+          </div>  
         )}
 
         {/* Input area - Fixed at bottom */}
         <div className="fixed bottom-0 left-0 right-0 z-10 p-4 border-t border-gray-700/50 bg-gray-900">
           <div className="max-w-3xl mx-auto">
-            <div className="flex items-center bg-gray-800/80 border border-gray-600/50 rounded-2xl p-4 shadow-lg backdrop-blur-sm">
+            <div className="flex items-center bg-gray-800/80 border border-gray-600/50 rounded-xl p-2 shadow-md backdrop-blur-sm min-h-[48px]">
               {/* Tools button */}
               <Button
                 variant="ghost"
@@ -174,7 +185,7 @@ export default function HomePage() {
                 }}
                 rows={1}
                 placeholder="Ask anything"
-                className="flex-1 bg-transparent border-none text-white placeholder:text-gray-400 text-lg focus-visible:ring-0 focus-visible:ring-offset-0 px-0"
+                className="flex-1 bg-transparent border-none text-white placeholder:text-gray-400 text-sm focus-visible:ring-0 focus-visible:ring-offset-0 px-0"
                 disabled={loading}
               />
 
@@ -206,6 +217,10 @@ export default function HomePage() {
   )
 }
 
+
+
+
+  {/* Previous versions (not in used) */}
 
 //  <main>Hello World! <br></br>
 

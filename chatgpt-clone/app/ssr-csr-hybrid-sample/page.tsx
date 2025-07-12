@@ -1,7 +1,7 @@
 import React from 'react'
 import MeClick from './click'
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <MeClick />
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

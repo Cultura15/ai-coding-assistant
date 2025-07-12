@@ -8,7 +8,7 @@ import {renderAssistantMessage} from "@/components/renderer"
 
 export default function HomePage() {
   const [prompt, setPrompt] = useState("")
-  const [response, setResponse] = useState("")
+  const [, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
   const [messages, setMessages] = useState<Array<{ role: "user" | "assistant"; content: string }>>([])
 
@@ -107,7 +107,7 @@ export default function HomePage() {
 
   // (Auto resize user input behavior with shift+enter) and (scroll limit)
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [lineCount, setLineCount] = useState(1);
+  const [, setLineCount] = useState(1);
   const maxLinesBeforeScroll = 7;
 
   useEffect(() => {

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { OpenAI } from "openai";
 import { codeOnlySystemPrompt } from "@/lib/ai/codeOnly";
 import { isWithinLineLimit } from "@/lib/ai/limitGuard";
-import { headers } from "next/headers";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -44,12 +43,6 @@ export async function POST(request: NextRequest){
             controller.close();
         }
     })
-
-    // const aiReply = response.choices[0]?.message?.content || '';
-
-    //   if (!isWithinLineLimit(aiReply)){
-    //     return NextResponse.json({error: 'Input exceeds 900 lines'}, {status: 400})
-    // }
     
     return new NextResponse(readableStream, {
         headers:{

@@ -12,6 +12,9 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false)
   const [messages, setMessages] = useState<Array<{ role: "user" | "assistant"; content: string }>>([])
 
+   // Smooth scroll to bottom on new message
+ const bottomRef = useRef<HTMLDivElement | null>(null)
+
   const handleSubmit = async (messageToSend?: string) => {
     const currentPrompt = messageToSend || prompt
     if (!currentPrompt.trim()) return
@@ -23,33 +26,78 @@ export default function HomePage() {
     setMessages(newMessages)
     setPrompt("")
 
-   const res = await fetch("/api/ai", {
+    try {
+    const res = await fetch("/api/ai", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({message: currentPrompt})
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: currentPrompt }),
     });
 
-    if (!res.body) return;
+    if (!res.body) throw new Error("No response body");
 
-    const reader = res.body.getReader()
-    const decoder = new TextDecoder()
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
     let fullText = "";
-    
-    while(true){
-      const {value, done} = await reader.read()
+
+    while (true) {
+      const { value, done } = await reader.read();
       if (done) break;
 
       const chunk = decoder.decode(value);
       fullText += chunk;
-      setMessages([...newMessages, { role: "assistant", content: fullText }]);
+
+      // Stream response into assistant message
+      setMessages((prevMessages) => {
+        const updated = [...prevMessages];
+        const last = updated[updated.length - 1];
+
+        if (last?.role === "assistant") {
+          updated[updated.length - 1] = { ...last, content: fullText };
+        } else {
+          updated.push({ role: "assistant", content: fullText });
+        }
+
+        return updated;
+      });
+
+      // Scroll smoothly during streaming
+        if (autoScroll){
+        setTimeout(() => {
+          bottomRef.current?.scrollIntoView({ behavior: "auto" });
+        }, 0);
+      }
     }
-    setLoading(false);
+
+    setResponse(fullText); // Optional
+  } catch (err) {
+    console.error(err);
+    setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
   }
 
-  const handleExampleClick = (example: string) => {
-    setPrompt(example)
-  }
+  setLoading(false);
+};
 
+  // Smooth scrolling breaker
+  const [autoScroll, setAutoScroll] = useState(true);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isAtBottom = scrollHeight - scrollTop <= clientHeight + 50; // buffer
+
+      setAutoScroll(isAtBottom);
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
+  // Clears chat
   const clearChat = () => {
     setMessages([])
     setResponse("")
@@ -80,16 +128,6 @@ export default function HomePage() {
   }, [prompt]);
 
 
-  // Smooth scroll to bottom on new message
- const bottomRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    if (bottomRef.current){
-      bottomRef.current.scrollIntoView({behavior: "smooth"})
-    }
-  }, [messages])
-
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       {/* Top Navigation */}
@@ -97,7 +135,7 @@ export default function HomePage() {
         {/* Left side - ChatGPT logo */}
         <div className="flex items-center gap-2">
           <Button variant="ghost" className="text-white hover:bg-gray-700/50 p-2" onClick={clearChat}>
-            <span className="font-semibold text-lg">ChatGPT</span>
+            <span className="font-semibold text-lg">CulturaAI</span>
             <ChevronDown className="w-4 h-4 ml-1" />
           </Button>
         </div>
@@ -140,10 +178,11 @@ export default function HomePage() {
                   >
                     {message.role === "user"
                     ? <div className="whitespace-pre-wrap">{message.content}</div>
-                    : renderAssistantMessage(message.content)}
+                    : renderAssistantMessage(message.content)}``
                   </div>
                 </div>
               ))}
+              <div ref = {chatContainerRef}></div>
               <div ref = {bottomRef}></div>
               {loading && (
                 <div className="flex justify-start">

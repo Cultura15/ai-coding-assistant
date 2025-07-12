@@ -87,6 +87,7 @@ To learn more about the stack:
 - [Prisma ORM](https://www.prisma.io/docs) – Database integration
 - [OpenAI API Docs](https://platform.openai.com/docs) – Model usage and setup
 - [React Syntax Highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter) – Code formatting
+- [React Markdown](https://github.com/remarkjs/react-markdown) - Render markdown content
 
 ---
 

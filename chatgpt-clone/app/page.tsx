@@ -5,6 +5,7 @@ import { ChevronDown, Plus, Wrench, Mic, Settings, Info, Sparkles, Send } from "
 import { useState, useEffect, useRef } from "react"
 
 import {renderAssistantMessage} from "@/components/renderer"
+import { isCodingPrompt } from "@/lib/ai/token-saver"
 
 export default function HomePage() {
   const [prompt, setPrompt] = useState("")
@@ -18,6 +19,11 @@ export default function HomePage() {
   const handleSubmit = async (messageToSend?: string) => {
     const currentPrompt = messageToSend || prompt
     if (!currentPrompt.trim()) return
+
+    if (!isCodingPrompt(prompt)){
+      alert("Only coding-related questions are allowed.")
+      return;
+    }
 
     setLoading(true)
 

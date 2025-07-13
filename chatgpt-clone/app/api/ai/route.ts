@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { OpenAI } from "openai";
 import { codeOnlySystemPrompt } from "@/lib/ai/codeOnly";
 import { isWithinLineLimit } from "@/lib/ai/limitGuard";
+import { isCodingPrompt } from "@/lib/ai/token-saver";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -16,7 +17,11 @@ export async function POST(request: NextRequest){
     }
 
     if (!isWithinLineLimit(userMessage)){
-        return NextResponse.json({error: 'Input exceeds 900 lines'}, {status: 400})
+        return NextResponse.json({error: 'Input exceeds 900 lines'}, {status: 400});
+    }
+
+    if (!isCodingPrompt){
+        return NextResponse.json({error: "Only coding-related questions are allowed."}, {status: 400});
     }
 
     const stream = await openai.chat.completions.create({

@@ -1,4 +1,3 @@
-import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -6,8 +5,11 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "ChatGPT Clone",
-  description: "A ChatGPT-inspired interface built with Next.js",
+  title: "j15",
+  description: "AI Coding Assistant",
+  icons: {
+    icon: "/myLogo.png",
+  },
 }
 
 export default function RootLayout({

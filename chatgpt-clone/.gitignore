@@ -43,4 +43,7 @@ next-env.d.ts
 # prisma
 /app/generated/prisma
 
+# firebase
+j16-ai-firebase-adminsdk-fbsvc-089a59e7ee.json
+
 

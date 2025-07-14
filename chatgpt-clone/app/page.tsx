@@ -141,7 +141,7 @@ export default function HomePage() {
         {/* Left side - ChatGPT logo */}
         <div className="flex items-center gap-2">
           <Button variant="ghost" className="text-white hover:bg-gray-700/50 p-1 sm:p-2" onClick={clearChat}>
-            <span className="font-semibold text-base sm:text-lg">Jarva AI</span>
+            <span className="font-semibold text-base sm:text-lg">j15 AI</span>
             <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
           </Button>
         </div>

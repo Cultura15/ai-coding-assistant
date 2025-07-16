@@ -32,11 +32,3 @@ docs(readme): add usage examples
 style: format code using Prettier
 
 
-
-implemented signin page
-added session in authOptions
-added session provider 
-protected homepage by adding client side protection
-
-removed prisma
-

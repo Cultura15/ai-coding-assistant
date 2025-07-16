@@ -15,7 +15,7 @@ export default function SignInPage() {
             <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
               <Code className="w-5 h-5 text-white" />
             </div>
-            <span className="text-white font-bold text-xl">AI Code Assistant</span>
+            <span className="font-semibold text-base sm:text-lg">j15 AI</span>
           </div>
         </div>
       </header>
@@ -25,7 +25,7 @@ export default function SignInPage() {
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-purple-600/20 text-purple-300 px-4 py-2 rounded-full text-sm mb-8">
             <Sparkles className="w-4 h-4" />
-            <span>Powered by GPT-4.1 Nano</span>
+            <span>Powered by GPT-4.1</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
@@ -33,10 +33,7 @@ export default function SignInPage() {
             <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"> Pro</span>
           </h1>
 
-          <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-            {/* AI-powered coding assistant that helps you debug, explain, and review large codebases. Handle 900+ lines of
-            code with intelligent analysis and suggestions. */}
-          </p>
+          <br></br>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
@@ -46,18 +43,8 @@ export default function SignInPage() {
               onClick={() => signIn("github", {callbackUrl: "/page/chat"})}
             >
               <Github className="w-5 h-5" />
-              Sign up with GitHub
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700/50 hover:text-white px-8 py-4 text-lg flex items-center gap-2 bg-transparent"
-              onClick={() => signIn("github", {callbackUrl: "/page/chat"})}
-            >
-              <Github className="w-5 h-5" />
               Sign in with GitHub
+              <ChevronRight className="w-4 h-4" />
             </Button>
           </div>
 

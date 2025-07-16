@@ -8,22 +8,27 @@ import { useRouter } from "next/navigation"
 
 import {renderAssistantMessage} from "@/components/renderer"
 import { isCodingPrompt } from "@/lib/ai/token-saver"
+import { useAutoScrollToBottom } from "@/components/autoScroll"
+import AutoResizeTextarea from "@/components/autoResizeInputarea"
+import ValidationNotification from "@/components/warningNotif"
 
-export default function HomePage() {
+export default function ChatPage() {
   const [prompt, setPrompt] = useState("")
   const [, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
   const [messages, setMessages] = useState<Array<{ role: "user" | "assistant"; content: string }>>([])
-  
-   // Smooth scroll to bottom on new message
-  const bottomRef = useRef<HTMLDivElement | null>(null)
+  const [autoScroll, setAutoScroll] = useState(true);
+  const { bottomRef, scrollToBottom } = useAutoScrollToBottom();
+  const [showValidationError, setShowValidationError] = useState(false)
+
 
   const handleSubmit = async (messageToSend?: string) => {
     const currentPrompt = messageToSend || prompt
     if (!currentPrompt.trim()) return
 
-    if (!isCodingPrompt(prompt)){
-      alert("Only coding-related questions are allowed.")
+    if (!isCodingPrompt(currentPrompt)){
+      setShowValidationError(true)
+
       return;
     }
 
@@ -69,11 +74,7 @@ export default function HomePage() {
       });
 
       // Scroll smoothly during streaming
-        if (autoScroll){
-        setTimeout(() => {
-          bottomRef.current?.scrollIntoView({ behavior: "auto" });
-        }, 0);
-      }
+       if (autoScroll) scrollToBottom();
     }
 
     setResponse(fullText); // Optional
@@ -86,7 +87,6 @@ export default function HomePage() {
 };
 
   // Smooth scrolling breaker
-  const [autoScroll, setAutoScroll] = useState(true);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -112,29 +112,6 @@ export default function HomePage() {
     setPrompt("")
   }
 
-
-  // (Auto resize user input behavior with shift+enter) and (scroll limit)
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [, setLineCount] = useState(1);
-  const maxLinesBeforeScroll = 7;
-
-  useEffect(() => {
-    const lines = prompt.split("\n").length
-    setLineCount(lines);
-
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"
-
-      if (lines <= maxLinesBeforeScroll){
-        textareaRef.current.style.overflowY = "hidden"
-        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-      } else{
-        textareaRef.current.style.overflowY = "auto"
-        textareaRef.current.style.height = "150px";
-      }
-    }
-  }, [prompt]);
-
   // authentication
   const {data: session, status} = useSession()
   const router = useRouter()
@@ -148,9 +125,15 @@ export default function HomePage() {
   if (!session) return null
 
 
-
  return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+
+      {/* Warning Notification */}
+      <ValidationNotification
+        isVisible={showValidationError}
+        onClose={() => setShowValidationError(false)}
+      />
+
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-2 sm:px-4 py-3 border-b border-gray-700/50 bg-gray-900">
         {/* Left side - ChatGPT logo */}
@@ -163,8 +146,7 @@ export default function HomePage() {
 
         {/* Center - Hidden on mobile */}
         <div className="hidden md:flex items-center gap-2 text-gray-300 text-sm">
-          <span>Created by Cultura</span>
-          <Info className="w-4 h-4" />
+          <span>Welcome, {session.user?.name}</span>
         </div>
 
         {/* Right side - Actions */}
@@ -226,7 +208,7 @@ export default function HomePage() {
             <div className="w-full max-w-full sm:max-w-2xl lg:max-w-3xl mx-auto">
               {/* Main heading */}
               <h1 className="text-white text-lg sm:text-xl md:text-2xl font-medium text-center mb-8 sm:mb-12">
-                Where should we begin?
+                What code can I help you debug today?
               </h1>
             </div>
           </div>
@@ -248,17 +230,15 @@ export default function HomePage() {
               </Button>
 
               {/* Input field */}
-              <textarea
-                ref={textareaRef}
+              <AutoResizeTextarea
                 value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                onChange={setPrompt}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault()
                     handleSubmit()
                   }
                 }}
-                rows={1}
                 placeholder="Ask anything"
                 className="flex-1 bg-transparent border-none text-white placeholder:text-gray-400 text-sm sm:text-base focus-visible:ring-0 focus-visible:ring-offset-0 px-1 sm:px-0 resize-none"
                 disabled={loading}

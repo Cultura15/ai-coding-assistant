@@ -1,21 +1,21 @@
 <img src="https://skillicons.dev/icons?i=next" alt="Cultura">
 
-# ChatGPT Clone – AI Coding Assistant
+# AI Coding Assistant
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## 🧠 About the Project
+## About the Project
 
 The **AI Coding Assistant** is a ChatGPT-style clone tailored specifically for developers. It is designed to help **debug, explain, and review large codebases**, with support for input and output of **900+ lines of code** — ideal for diagnosing long scripts or full-stack applications.
 
 It is powered by **OpenAI's GPT-4.1** and includes custom system prompts for coding-only responses, as well as a limiter guard to control token usage.
 
 ### Key Features:
-- 🧠 GPT-4.1 integration with custom code-only prompt
-- 🧑‍💻 React-based UI with enhanced chat experience  
-- 🎨 Syntax-highlighted code outputs (Java, TS, JS, PHP, HTML, CSS, JSON, etc.)
-- ⚙️ Message token/line limit guard for performance
-- 🐛 Built specifically for debugging long code
+- GPT-4.1 integration with custom code-only prompt
+- React-based UI with enhanced chat experience  
+- Syntax-highlighted code outputs (Java, TS, JS, PHP, HTML, CSS, JSON, etc.)
+- Message token/line limit guard for performance
+- Built specifically for debugging long code
 
 ---
 
@@ -117,9 +117,5 @@ Read more: [Next.js Deployment Docs](https://nextjs.org/docs/app/building-your-a
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---

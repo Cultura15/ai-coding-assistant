@@ -20,6 +20,13 @@ export const authOptions = {
     }),
   }),
   secret: process.env.NEXTAUTH_SECRET,
+  
+  session: {
+    strategy: "database" as const,
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60
+  },
+  
 };
 
 export default NextAuth(authOptions);

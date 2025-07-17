@@ -67,7 +67,7 @@ npm run dev
 yarn dev
 ```
 
-Then open [http://localhost:3000](http://localhost:3000) to see the result.
+Then open [http://localhost:3000](http://localhost:3000) to see the result. <p align="right"> <img src="https://komarev.com/ghpvc/?username=Cultura15&label=color=ff69b4&style=flat" alt="Cultura" /> </p>
 
 ---
 

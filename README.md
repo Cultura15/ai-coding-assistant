@@ -6,14 +6,14 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## About the Project
 
-The **AI Coding Assistant** is a ChatGPT-style clone tailored specifically for developers. It is designed to help **debug, explain, and review large codebases**, with support for input and output of **900+ lines of code** — ideal for diagnosing long scripts or full-stack applications.
+Designed to help **debug, explain, and review large codebases**, with support for input and output of **900+ lines of code** — ideal for diagnosing long scripts or full-stack applications.
 
 It is powered by **OpenAI's GPT-4.1** and includes custom system prompts for coding-only responses, as well as a limiter guard to control token usage.
 
 ### Key Features:
-- GPT-4.1 integration with custom code-only prompt
-- React-based UI with enhanced chat experience  
-- Syntax-highlighted code outputs (Java, TS, JS, PHP, HTML, CSS, JSON, etc.)
+- GPT-4.1 powered
+- Syntax-highlighted code outputs
+- Markdown + readableStream output
 - Message token/line limit guard for performance
 - Built specifically for debugging long code
 
@@ -41,12 +41,23 @@ yarn install
 Create a `.env` file at the root with the following:
 
 ```env
-DATABASE_URL=your-database-url
+FIREBASE=your-firebase-private-key
 OPENAI_API_KEY=your-openai-api-key
+NEXTAUTH=your-nextauth-secret
+GITHUB=your-clientID-clientsecret
 ```
 
-- `DATABASE_URL` is used for Prisma (optional, if you're using a database)
 - `OPENAI_API_KEY` is required to connect to the GPT-4.1 model
+  
+- `FIREBASE_PRIVATE_KEY` 
+- `FIREBASE_CLIENT_EMAIL` 
+- `FIREBASE_PROJECT_ID`
+  
+- `GITHUB_CLIENT_ID`
+- `GITHUB_CLIENT_SECRET`
+  
+- `NEXTAUTH_SECRET`
+- `NEXTAUTH_URL` 
 
 ### 🧪 Run the Development Server
 
@@ -65,16 +76,42 @@ Then open [http://localhost:3000](http://localhost:3000) to see the result.
 ```
 app/
 ├── api/
-│   └── ai/route.ts          # API route that sends user input to OpenAI
-├── components/
-│   ├── renderer.tsx         # Renders markdown + code output
-│   └── highlighter.tsx      # Syntax highlighter for code responses
-├── utils/
-│   ├── codeOnlySystemPrompt.ts
-│   └── limitGuard.ts
-.env
-prisma/
-├── schema.prisma
+│   ├── ai/
+│   │   └── route.ts           # API route to handle AI chat requests via OpenAI
+│   └── auth/
+│       └── [...nextauth].ts   # NextAuth API route for authentication
+│
+├── chat/                      # Chat page route
+│   └── page.tsx               
+│
+├── signin/                    # Sign-in page route
+│   └── page.tsx               
+│
+├── layout.tsx                 # Root layout for the app (includes HTML & body)
+├── page.tsx                   
+└── providers.tsx              # Context providers (theme, session, etc.)
+
+components/
+├── ui/                        # Reusable UI components (buttons, inputs, etc.)
+│   └── ...                    # Example: button.tsx, input.tsx
+├── autoResizeInputarea.tsx    # Expands input area height based on text length
+├── autoScroll.tsx             # Scrolls to bottom during AI response
+├── highlighter.tsx            # Syntax highlighter for code blocks
+├── renderer.tsx               # Renders Markdown and code output from AI
+└── warningNotif.tsx           # Validation notification
+
+lib/
+├── ai/
+│   ├── codeOnly.ts            # System prompt focused on code-only replies
+│   ├── limitGuard.ts          # Input/output token limitation logic
+│   └── token-saver.ts         # Saves and manages OpenAI token usage
+│
+├── auth.ts                    # NextAuth options (GitHub provider, Firestore adapter)
+└── firebase.ts                # Firebase configuration and initialization
+
+.env                            # Environment variables
+package.json                    # Project dependencies and scripts
+
 ```
 
 ---
@@ -96,7 +133,7 @@ You can deploy this project on Vercel for free:
 
 1. Push to GitHub
 2. Connect to Vercel
-3. Set your `OPENAI_API_KEY` and `DATABASE_URL` in the environment variables
+3. Set your `OPENAI_API_KEY`, `FIREBASE`, `GITHUB`, and `NEXTAUTH` in the environment variables
 4. Deploy!
 
 Read more: [Next.js Deployment Docs](https://nextjs.org/docs/app/building-your-application/deploying)
@@ -105,12 +142,8 @@ Read more: [Next.js Deployment Docs](https://nextjs.org/docs/app/building-your-a
 
 ## 🛠 Future Improvements
 
-- [ ] Add auth and chat history
-- [ ] Stream AI responses
+- [ ] Add chat history
 - [ ] Support multiple system modes (debug, explain, optimize)
-- [ ] Add conversation persistence
-- [ ] Implement code execution sandbox
-- [ ] Add collaborative coding features
 
 ---
 

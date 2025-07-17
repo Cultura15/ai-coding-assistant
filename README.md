@@ -120,10 +120,14 @@ package.json                    # Project dependencies and scripts
 
 To learn more about the stack:
 
-- [Next.js Documentation](https://nextjs.org/docs) – Features and API
-- [Prisma ORM](https://www.prisma.io/docs) – Database integration
-- [OpenAI API Docs](https://platform.openai.com/docs) – Model usage and setup
+- [Next.js Documentation](https://nextjs.org/docs) – Features and API  
+- [OpenAI API Docs](https://platform.openai.com/docs) – Model usage and setup  
 - [React Syntax Highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter) – Code formatting
+- [Markdown Rendering with React](https://github.com/remarkjs/react-markdown) – Used for rendering Markdown in the `renderer.tsx` component    
+- [GitHub OAuth Apps](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) – How to create a GitHub Client ID and Secret  
+- [NextAuth.js Documentation](https://next-auth.js.org/getting-started/introduction) – Auth setup, providers, adapters  
+- [Firebase Admin SDK Setup](https://firebase.google.com/docs/admin/setup) – How to generate service account credentials for Firebase  
+- [Firebase Docs](https://firebase.google.com/docs) – Full platform guide and integrations
 
 ---
 

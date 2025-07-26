@@ -26,6 +26,20 @@ const codingKeywords = [
   "getserverSideProps", "getStaticProps", "next.config.js", "api route", "use client", "link from next/link",
   "image from next/image", "dynamic()", "useSearchParams", "fetch", "async component",
 
+   // ==========================
+  // ✅ Python / Django
+  // ==========================
+  "python", "django", "django rest framework", "drf", "views.py", "models.py", "urls.py", "serializers.py",
+  "queryset", "orm", "migrations", "manage.py", "python manage.py", "@login_required", "@api_view", "request.data",
+  "path(", "include(", "render(request", "redirect(", "HttpResponse", "get_object_or_404", "from django.", "settings.py",
+
+  // ==========================
+  // ✅ Flutter / Dart
+  // ==========================
+  "flutter", "dart", "statelesswidget", "statefulwidget", "buildcontext", "materialapp", "scaffold",
+  "container(", "row(", "column(", "text(", "icon(", "navigator.push", "setstate(()", "async", "await",
+  "initstate()", "dispose()", "pubspec.yaml", "hot reload", "flutter sdk", "flutter run", "flutter build",
+  
   // ==========================
   // ✅ Tailwind CSS / HTML
   // ==========================

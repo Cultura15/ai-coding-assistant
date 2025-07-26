@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { OpenAI } from "openai";
 import { codeOnlySystemPrompt } from "@/lib/ai/codeOnly";
+import { debugOnlySystemPrompt } from "@/lib/ai/debugOnly";
 import { isWithinLineLimit } from "@/lib/ai/limitGuard";
 import { isCodingPrompt } from "@/lib/ai/token-saver";
 
@@ -10,7 +11,7 @@ const openai = new OpenAI({
 
 export async function POST(request: NextRequest){
     const body = await request.json()
-    const userMessage = body.message
+    const { message: userMessage, mode = "full" } = body;
 
     if (!userMessage){
         return NextResponse.json({error: 'Message is required'}, {status: 400});
@@ -24,11 +25,14 @@ export async function POST(request: NextRequest){
         return NextResponse.json({error: "Only coding-related questions are allowed."}, {status: 400});
     }
 
+    const systemPrompt = mode === "partial" ? debugOnlySystemPrompt : codeOnlySystemPrompt;
+
+
     const stream = await openai.chat.completions.create({
         model: 'gpt-4.1-nano',
         stream: true,
         messages: [
-            {role: 'system', content: codeOnlySystemPrompt},
+            {role: 'system', content: systemPrompt},
             {role: 'user', content: userMessage}
         ],
         temperature: 0.2

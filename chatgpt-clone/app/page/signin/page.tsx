@@ -12,10 +12,12 @@ export default function SignInPage() {
       <header className="border-b border-gray-700/50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <Code className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-semibold text-base sm:text-lg">j15 AI</span>
+              <img
+                src="/myLogo.png"
+                alt="My Logo"
+                className="w-8 h-8 object-contain"
+              />
+            <span className="font-semibold text-base sm:text-lg">j15.ai</span>
           </div>
         </div>
       </header>
@@ -23,10 +25,8 @@ export default function SignInPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-purple-600/20 text-purple-300 px-4 py-2 rounded-full text-sm mb-8">
-            <Sparkles className="w-4 h-4" />
-            <span>Powered by GPT-4.1</span>
-          </div>
+          <br></br>
+          <br></br>
 
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
             Debug Code Like a

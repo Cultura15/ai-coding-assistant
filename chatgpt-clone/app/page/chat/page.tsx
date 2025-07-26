@@ -11,6 +11,7 @@ import { isCodingPrompt } from "@/lib/ai/token-saver"
 import { useAutoScrollToBottom } from "@/components/autoScroll"
 import AutoResizeTextarea from "@/components/autoResizeInputarea"
 import ValidationNotification from "@/components/warningNotif"
+import DebugControlPanel from "@/components/controlpanel"
 
 export default function ChatPage() {
   const [prompt, setPrompt] = useState("")
@@ -20,6 +21,7 @@ export default function ChatPage() {
   const [autoScroll, setAutoScroll] = useState(true);
   const { bottomRef, scrollToBottom } = useAutoScrollToBottom();
   const [showValidationError, setShowValidationError] = useState(false)
+  const [mode, setMode] = useState<"full" | "partial">("full");
 
 
   const handleSubmit = async (messageToSend?: string) => {
@@ -43,7 +45,7 @@ export default function ChatPage() {
     const res = await fetch("/api/ai", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: currentPrompt }),
+      body: JSON.stringify({ message: currentPrompt, mode }),
     });
 
     if (!res.body) throw new Error("No response body");
@@ -77,7 +79,7 @@ export default function ChatPage() {
        if (autoScroll) scrollToBottom();
     }
 
-    setResponse(fullText); // Optional
+    setResponse(fullText); 
   } catch (err) {
     console.error(err);
     setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
@@ -95,7 +97,7 @@ export default function ChatPage() {
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container;
-      const isAtBottom = scrollHeight - scrollTop <= clientHeight + 50; // buffer
+      const isAtBottom = scrollHeight - scrollTop <= clientHeight + 50; 
 
       setAutoScroll(isAtBottom);
     };
@@ -134,12 +136,14 @@ export default function ChatPage() {
         onClose={() => setShowValidationError(false)}
       />
 
+      <DebugControlPanel onModeChange={(setMode) => console.log(`Mode changed to: ${setMode}`)} />
+
       {/* Top Navigation */}
       <header className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between px-2 sm:px-4 py-3 border-b border-gray-700/50 bg-gray-900">
         {/* Left side - ChatGPT logo */}
         <div className="flex items-center gap-2">
-          <Button variant="ghost" className="text-white hover:bg-gray-700/50 p-1 sm:p-2" onClick={clearChat}>
-            <span className="font-semibold text-base sm:text-lg">j15 AI</span>
+          <Button variant="ghost" className="text-white hover:bg-gray-700/50 p-1 sm:p-2">
+            <span className="font-semibold text-base sm:text-lg">j15.ai</span>
             <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
           </Button>
         </div>

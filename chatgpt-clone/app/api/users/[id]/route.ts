@@ -3,9 +3,9 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = context.params;
+  const { id } = await params;
 
   const userDoc = await db.collection("users").doc(id).get();
 

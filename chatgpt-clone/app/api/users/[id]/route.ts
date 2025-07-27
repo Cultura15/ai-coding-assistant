@@ -3,13 +3,11 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  context: Promise<{ params: { id: string } }>
+  context: { params: { id: string } }
 ) {
-  
-  const { params } = await context;
-  const userId = params.id;
+  const { id } = context.params;
 
-  const userDoc = await db.collection("users").doc(userId).get();
+  const userDoc = await db.collection("users").doc(id).get();
 
   if (!userDoc.exists) {
     return new Response(JSON.stringify({ error: "User not found" }), {
